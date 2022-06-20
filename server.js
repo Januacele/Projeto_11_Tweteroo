@@ -27,7 +27,14 @@ app.get('/sign-up', (req,res) => {
 // Get the tweets information (userName and tweet)
 app.post("/tweets", (req, res) => {
     const tweet = req.body;
-    tweets.push(tweet);
+
+    const newTweet = {
+        username: tweet.username,
+        avatar: tweet.avatar,
+        tweet: tweet.tweet,
+    }
+
+    tweets.push(newTweet);
     res.send("OK");
 });
 
