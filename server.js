@@ -5,16 +5,16 @@ const app = express();
 app.use(cors());
 app.use(json());
 
-const users = [];
-const tweets = [];
+let users = [];
+let tweets = [];
 
 // Get the user information (userName and avatar)
 app.post("/sign-up", (req, res) => {
-    const sign = req.body;
+    const body = req.body;
 
     const newUser ={
-        username: sign.username, 
-	    avatar: sign.avatar,
+        username: body.username, 
+	    avatar: body.avatar,
     }
     users.push(newUser);
     res.send("OK");
@@ -26,13 +26,15 @@ app.get('/sign-up', (req,res) => {
 
 // Get the tweets information (userName and tweet)
 app.post("/tweets", (req, res) => {
-    const tweet = req.body;
+    const body = req.body;
+
+    let userTweet = users.find(user => user.username === body.username);
 
     const newTweet = {
-        username: tweet.username,
-        avatar: tweet.avatar,
-        tweet: tweet.tweet,
-    }
+        username: body.username,
+        avatar: userTweet.avatar,
+        tweet: body.tweet,
+    };
 
     tweets.push(newTweet);
     res.send("OK");
@@ -41,11 +43,11 @@ app.post("/tweets", (req, res) => {
 app.get("/tweets", (req,res) => {
     let lastTen = [];
     if(tweets.length < 10){
-        for (let i = tweets.length-1; i >= 0; i--){
+        for (let i = tweets.length - 1; i >= 0; i--){
             lastTen.push(tweets[i]);
         }
     } else {
-        for (let i = tweets.length-1; tweets.length - 10; i--){
+        for (let i = tweets.length - 1; i >= tweets.length - 10; i--){
             lastTen.push(tweets[i]);
         }
     }
