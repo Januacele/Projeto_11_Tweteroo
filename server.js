@@ -39,8 +39,20 @@ app.post("/tweets", (req, res) => {
 });
 
 app.get("/tweets", (req,res) => {
-    res.send(tweets);
+    let lastTen = [];
+    if(tweets.length < 10){
+        for (let i = tweets.length-1; i >= 0; i--){
+            lastTen.push(tweets[i]);
+        }
+    } else {
+        for (let i = tweets.length-1; tweets.length - 10; i--){
+            lastTen.push(tweets[i]);
+        }
+    }
+
+    res.send(lastTen);
 })
 
 
-app.listen(5000);
+app.listen(5000, () => console.log("Server is running."));
+
